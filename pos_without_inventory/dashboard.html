@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #fff6b7, #ffd84d);
+}
+
+/* HEADER */
+.header {
+    background: #ff4d4d;
+    color: white;
+    padding: 20px;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+/* NEW HEADER LAYOUT (ONLY ADDITION) */
+.header-content {
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
+.title {
+    text-align: center;
+}
+
+/* LOGOUT BUTTON */
+.logout-btn {
+    position: absolute;
+    left: 0px;
+    bottom: 3px;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 8px;
+    background: white;
+    color: #ff4d4d;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.logout-btn:hover {
+    background: #ffe0e0;
+}
+
+/* GRID */
+.container {
+    height: calc(100vh - 80px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    padding: 25px;
+}
+
+.container .card:last-child {
+    grid-column: span 2;
+    justify-self: center;
+    width: 50%;
+}
+
+/* CARD */
+.card {
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    transition: 0.3s;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    color: white;
+}
+
+/* BIG ICON */
+.icon {
+    font-size: 120px;
+    margin-bottom: 20px;
+}
+
+/* TEXT */
+.card h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+.card p {
+    margin: 10px 0 20px;
+}
+
+/* BUTTON */
+.card button {
+    padding: 14px 30px;
+    border: none;
+    border-radius: 12px;
+    background: white;
+    color: #ff4d4d;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* COLORS */
+.menu {
+    background: linear-gradient(135deg, #ffb347, #ffcc33);
+}
+
+.sales {
+    background: linear-gradient(135deg, #ff4d4d, #ff8080);
+}
+
+/* HOVER */
+.card:hover {
+    transform: scale(1.05);
+}
+
+
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+    <div class="header-content">
+        <button class="logout-btn" onclick="logout()">Logout</button>
+        <div class="title" id="dashboardTitle">Dashboard</div>
+    </div>
+</div>
+
+<div class="container">
+
+
+
+    <!-- MENU -->
+    <div class="card menu" onclick="goMenu()">
+        <div class="icon">🍔</div>
+        <h1>Menu</h1>
+        <p>View and manage products</p>
+        <button>Open Menu</button>
+    </div>
+
+    <!-- SALES -->
+    <div class="card sales" onclick="goSales()">
+        <div class="icon">📊</div>
+        <h1>Sales Report</h1>
+        <p>Track sales performance</p>
+        <button>View Reports</button>
+    </div>
+
+<div class="card menu" id="addProductCard" onclick="goAddProduct()">
+    <div class="icon">➕</div>
+    <h1>Add Product</h1>
+    <p>Create new menu item</p>
+    <button>Add Now</button>
+</div>
+
+</div>
+
+<script>
+function goMenu() {
+    window.location.href = "menu.html";
+}
+
+function logout() {
+
+let role = localStorage.getItem("role");
+
+if (role === "admin") {
+    alert("Logged out!");
+    window.location.href = "login_ui.html";
+    return;
+}
+
+    let currentUser = localStorage.getItem("currentUser");
+    let logs = JSON.parse(localStorage.getItem("logs")) || [];
+
+    // find active log (no timeout yet)
+    let activeLog = logs.find(log => 
+        log.username === currentUser && !log.timeOut
+    );
+
+    if (activeLog) {
+        activeLog.timeOut = new Date().toLocaleTimeString();
+    }
+
+    localStorage.setItem("logs", JSON.stringify(logs));
+
+    alert("Logged out!");
+    window.location.href = "login_ui.html";
+}
+
+function goSales() {
+    window.location.href = "sales.html";
+}
+
+function goAddProduct() {
+    window.location.href = "addproduct.html";
+}
+
+
+
+function goEmployeeLog() {
+    window.location.href = "employee-log.html";
+}
+
+let role = localStorage.getItem("role");
+
+if (role !== "admin") {
+
+    // hide admin features
+    document.getElementById("addProductCard").style.display = "none";
+    document.getElementById("employeeLogCard").style.display = "none";
+
+    
+}
+
+let title = document.getElementById("dashboardTitle");
+if (role === "admin" && title) {
+    title.innerText = "Admin Panel";
+}
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>User Guide</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 70%;
+    margin: 40px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+h2 {
+    margin-top: 20px;
+    color: #333;
+}
+
+ul {
+    margin-left: 20px;
+}
+
+p {
+    margin: 5px 0;
+}
+
+.section {
+    margin-bottom: 20px;
+}
+
+.btn-back {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 8px 15px;
+    background-color: #ffcc00;
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.btn-back:hover {
+    background-color: #e6b800;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<a href="login_ui.html" class="btn-back">← Back to Login</a>
+
+<h1>User Guide</h1>
+
+<!-- 1 -->
+<div class="section">
+<h2>1. Introduction</h2>
+<p>This system is a Point of Sale (POS) system that allows users to manage products, place orders, track sales, monitor inventory, and log employee activity.</p>
+</div>
+
+<!-- 2 -->
+<div class="section">
+<h2>2. User Roles</h2>
+
+<p><strong>Admin:</strong></p>
+<ul>
+<li>Manage products (add, edit, delete)</li>
+<li>View sales analytics</li>
+<li>Access employee logs</li>
+<li>Manage inventory</li>
+</ul>
+
+<p><strong>Employee:</strong></p>
+<ul>
+<li>Browse menu and place orders</li>
+<li>View cart and complete transactions</li>
+<li>Automatic time-in and time-out logging</li>
+</ul>
+</div>
+
+<!-- 3 -->
+<div class="section">
+<h2>3. Account Registration & Login</h2>
+<p>1. Create an account using a username and password.</p>
+<p>2. Login using your credentials.</p>
+<p>3. Admin account is automatically created:</p>
+<p><strong>Username:</strong> admin</p>
+<p><strong>Password:</strong> ********</p>
+</div>
+
+<!-- 4 -->
+<div class="section">
+<h2>4. Dashboard</h2>
+<p>After login, users will see the dashboard with the following options:</p>
+<ul>
+<li><strong>Menu</strong> – View and order products</li>
+<li><strong>Sales Report</strong> – View analytics and receipts</li>
+<li><strong>Add Product</strong> (Admin only)</li>
+
+<li><strong>Employee Log</strong> (Admin only)</li>
+</ul>
+</div>
+
+<!-- 5 -->
+<div class="section">
+<h2>5. Menu & Ordering</h2>
+<ul>
+<li>Select products from the menu</li>
+<li>Click "+" to add items to cart</li>
+<li>Adjust quantity or remove items</li>
+<li>Click <strong>Order</strong> to confirm</li>
+</ul>
+
+<p><strong>Order Flow:</strong></p>
+<ul>
+<li>Orders go to <strong>Pending</strong></li>
+<li>Click ✔ to mark as <strong>Completed</strong></li>
+</ul>
+</div>
+
+<!-- 6 -->
+<div class="section">
+<h2>6. Sales Analytics</h2>
+
+<ul>
+<li><strong>Today</strong> – Shows the latest 20 receipts only</li>
+<li><strong>Weekly / Monthly / Yearly</strong> – Filters recent sales</li>
+<li><strong>Archive</strong> – Shows all older receipts (full history)</li>
+</ul>
+
+<p><strong>Note:</strong> Older receipts are automatically moved to Archive when sales exceed 20 entries.</p>
+</div>
+
+
+
+<!-- 8 -->
+<div class="section">
+<h2>8. Employee Log</h2>
+<ul>
+<li>Login = automatic <strong>Time-In</strong></li>
+<li>Logout = automatic <strong>Time-Out</strong></li>
+<li>Admin can view all employee logs</li>
+</ul>
+</div>
+
+<!-- 9 -->
+<div class="section">
+<h2>9. Data Storage</h2>
+<p>All data is stored locally in the browser using localStorage. This includes:</p>
+<ul>
+<li>Users</li>
+<li>Sales</li>
+
+<li>Employee logs</li>
+</ul>
+</div>
+
+</div>
+
+</body>
+</html>

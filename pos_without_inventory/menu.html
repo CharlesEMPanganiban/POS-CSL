@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Menu</title>
+
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #fff6b7;
+}
+/* HEADER */
+.header {
+    background: #ff4d4d;
+    color: white;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+/* LAYOUT */
+.container {
+    display: grid;
+    grid-template-columns: 1fr 300px 300px;
+    gap: 20px;
+    padding: 20px;
+    align-items: start;
+    min-height: calc(100vh - 140px);
+}
+
+/* PRODUCTS */
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+
+/* PRODUCT CARD */
+.card {
+    background: white;
+    border-radius: 15px;
+    padding: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: 305px;
+    transition: 0.25s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.card img {
+    width: 100%;
+    height: 67%;
+    object-fit: auto;
+    border-radius: 12px;
+}
+
+.card h3 {
+    font-size: 14px;
+    margin: 6px 0;
+    text-align: center;
+}
+
+.card p {
+    font-size: 11px;
+    color: #555;
+    text-align: center;
+    margin: 4px 0;
+    flex-grow: 1;
+}
+
+
+.card h3 {
+    margin: 10px 0 5px;
+}
+
+.card p {
+    font-size: 13px;
+    color: #555;
+}
+
+.price {
+    font-weight: bold;
+    text-align: center;
+    margin: 5px 0;
+}
+
+/* BUTTON */
+.card button {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+
+    align-self: center;
+    transition: 0.2s;
+}
+
+.card button:hover {
+    background: #e60000;
+    transform: scale(1.1);
+}
+
+/* CART */
+.cart {
+    background: white;
+    padding: 20px;
+    border-left: 2px solid #eee;
+    border-radius: 20px;
+    position: relative;
+
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.cart button {	
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.cart, .orders-panel {
+    border-radius: 15px;
+}
+
+.cart h2 {
+    margin-top: 0;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.card button {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+
+
+/* ORDER BUTTON */
+.order-btn {
+    width: 100%;
+    padding: 10px;
+    background: #ffd84d;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.order-btn:hover {
+    background: #666;
+}
+
+.back-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: white;
+    color: #ff4d4d;
+    padding: 6px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+* {
+    transition: 0.2s;
+}
+
+.order-btn:hover {
+    transform: translateX(-50%) scale(1.05);
+    background: #e60000;
+}
+
+.clear-btn {
+    padding: 6px 14px;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s ease;
+}
+
+.clear-btn:hover {
+    transform: scale(1.05);
+    background: #e60000;
+}
+
+.orders-panel {
+    background: white;
+    padding: 15px;
+    border-left: 2px solid #eee;
+
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+}
+
+.order-card {
+    background: #f5f5f5;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+.mini-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 10px;
+    transition: 0.2s;
+}
+
+.mini-btn:hover {
+    background: #e60000;
+    transform: scale(1.05);
+}
+
+.cart {
+    background: white;
+    padding: 20px;
+    border-left: 2px solid #eee;
+    border-radius: 20px;
+
+    height: 39.5%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER ALIGNMENT */
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* CLEAR BUTTON (TOP RIGHT) */
+.clear-btn {
+    padding: 6px 12px;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.clear-btn:hover {
+    background: #e60000;
+}
+
+/* ORDER BUTTON (BOTTOM CENTER) */
+.order-btn {
+    position: absolute;
+    bottom: 20px;
+
+    left: 82%;
+    transform: translateX(-50%);
+
+    display: inline-block;
+    width: auto;
+
+    padding: 10px 30px;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 999px;
+    font-weight: bold;
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.order-btn:hover {
+    transform: translateX(-50%) scale(1.05);
+    background: #e60000;
+}
+
+/* PREVENT OVERLAP */
+#cartItems {
+    padding-bottom: 30px;
+}
+
+.categories {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    justify-content: center;
+}
+
+.categories button {
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: none;
+    background: #eee;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.categories button.active {
+    background: #ff4d4d;
+    color: white;
+}
+
+.card h3 {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.card p {
+    font-size: 11px;
+    color: #555;
+    margin: 3px 0;
+    flex-grow: 1;
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+<a href="dashboard.html" class="back-btn">← Back</a>
+
+<div class="header">Menu</div>
+
+<div class="categories">
+    <button onclick="filterCategory('all')" class="active">All</button>
+    <button onclick="filterCategory('bestseller')">Best Seller</button>
+    <button onclick="filterCategory('food')">Food</button>
+    <button onclick="filterCategory('beverages')">Beverages</button>
+    <button onclick="filterCategory('others')">Others</button>
+</div>
+
+<div class="container">
+
+    <!-- PRODUCTS -->
+
+<div class="products" id="productList"></div>
+
+    <!-- CART -->
+<div class="cart">
+
+    <!-- HEADER -->
+    <div class="cart-header">
+        <h2>Cart 🛒</h2>
+        <button class="clear-btn" onclick="clearCart()">Clear All</button>
+    </div>
+
+    <!-- ITEMS -->
+    <div id="cartItems"></div>
+
+    <!-- TOTAL -->
+    <h3 id="total">Total: ₱0</h3>
+
+    <!-- ORDER BUTTON -->
+    <button class="order-btn" onclick="order()">Order</button>
+
+</div>
+
+<div class="orders-panel">
+
+<h3 style="display:flex; align-items:center; justify-content:space-between;">
+    <span>🟡 Pending</span>
+    <button onclick="clearPending()" class="mini-btn">Clear</button>
+</h3>
+<div id="pendingOrders"></div>
+
+<h3 style="display:flex; align-items:center; justify-content:space-between;">
+    <span>🟢 Completed</span>
+    <button onclick="clearCompleted()" class="mini-btn">Clear</button>
+</h3>
+<div id="completedOrders"></div>
+
+
+</div>
+
+<script>
+
+let defaultProducts = [
+    {
+        name: "Super Double Chili Burger",
+        price: 120,
+        category: "food",
+        image: "https://via.placeholder.com/150"
+    },
+    {
+        name: "Chili Cheese Burger",
+        price: 80,
+        category: "food",
+        image: "https://via.placeholder.com/150"
+    },
+    {
+        name: "Super Franks",
+        price: 50,
+        category: "bestseller",
+        image: "https://via.placeholder.com/150"
+    },
+    {
+        name: "Chili Cheese Franks",
+        price: 80,
+        category: "bestseller",
+        image: "https://via.placeholder.com/150"
+    },
+    {
+        name: "Burger and Egg",
+        price: 80,
+        category: "bestseller",
+        image: "https://via.placeholder.com/150"
+    }
+];
+
+
+
+function clearCart() {
+    if (!confirm("Are you sure you want to clear the cart?")) {
+        return;
+    }
+
+    cart = [];
+    total = 0;
+    displayCart();
+}
+
+function removeFromCart(name, price) {
+    let item = cart.find(i => i.name === name);
+
+    if (!item) return;
+
+    item.qty -= 1;
+    total -= price;
+
+    if (item.qty <= 0) {
+        cart = cart.filter(i => i.name !== name);
+    }
+
+    displayCart();
+}
+
+let cart = [];
+let total = 0;
+
+function addToCart(name, price) {
+    let existing = cart.find(item => item.name === name);
+
+    if (existing) {
+        existing.qty += 1;
+    } else {
+        cart.push({name, price, qty: 1});
+    }
+
+    total += price;
+    displayCart();
+}
+
+function displayCart() {
+    let cartDiv = document.getElementById("cartItems");
+    cartDiv.innerHTML = "";
+
+    cart.forEach((item, index) => {
+        cartDiv.innerHTML += `
+            <div class="cart-item">
+                ${item.name} x${item.qty} - ₱${item.price * item.qty}
+                <button onclick="removeItem(${index})">-</button>
+            </div>
+        `;
+    });
+
+    document.getElementById("total").innerText = "Total: ₱" + total;
+}
+
+function removeItem(index) {
+    total -= cart[index].price;
+    cart[index].qty -= 1;
+
+    if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+    }
+
+    displayCart();
+}
+
+function order() {
+    if(cart.length === 0){
+        alert("Cart is empty!");
+        return;
+    }
+
+    if (!confirm("Are you sure you want to place this order?")) {
+    return;
+    }
+
+    let now = new Date();
+    let dateTime = now.toISOString();
+
+    let transaction = {
+        items: cart,
+        total: total,
+        date: dateTime
+    };
+
+    let pending = JSON.parse(localStorage.getItem("pending")) || [];
+    pending.push(transaction);
+    localStorage.setItem("pending", JSON.stringify(pending));
+
+    cart = [];
+    total = 0;
+    displayCart();
+
+    displayPending();
+}
+
+function displayPending() {
+    let pending = JSON.parse(localStorage.getItem("pending")) || [];
+    let div = document.getElementById("pendingOrders");
+    div.innerHTML = "";
+
+    pending.forEach((order, index) => {
+        div.innerHTML += `
+            <div class="order-card">
+
+                ${order.items && Array.isArray(order.items) 
+                    ? order.items.map(item => `• ${item.name} x${item.qty}`).join("<br>") 
+                    : ""}
+
+                <div><strong>Total: ₱${order.total}</strong></div>
+
+                <button onclick="completeOrder(${index})">✔</button>
+
+            </div>
+        `;
+    });
+}
+
+function completeOrder(index) {
+
+    if (!confirm("Mark this order as completed?")) {
+    return;
+    }
+
+    let pending = JSON.parse(localStorage.getItem("pending")) || [];
+    let completed = JSON.parse(localStorage.getItem("completed")) || [];
+
+    let order = pending.splice(index, 1)[0];
+    completed.push(order);
+
+    
+    localStorage.setItem("pending", JSON.stringify(pending));
+    localStorage.setItem("completed", JSON.stringify(completed));
+
+    let sales = JSON.parse(localStorage.getItem("sales")) || [];
+    sales.push(order);
+    localStorage.setItem("sales", JSON.stringify(sales));
+
+    displayPending();
+    displayCompleted();
+}
+
+function displayCompleted() {
+    let completed = JSON.parse(localStorage.getItem("completed")) || [];
+    let div = document.getElementById("completedOrders");
+    div.innerHTML = "";
+
+    completed.forEach(order => {
+        div.innerHTML += `
+            <div class="order-card">
+
+                ${order.items && Array.isArray(order.items) 
+                    ? order.items.map(item => `• ${item.name} x${item.qty}`).join("<br>") 
+                    : ""}
+
+                <div><strong>Total: ₱${order.total}</strong></div>
+
+            </div>
+        `;
+    });
+}
+
+function clearPending() {
+    if (confirm("Clear all pending orders?")) {
+        localStorage.removeItem("pending");
+        displayPending();
+    }
+}
+
+function clearCompleted() {
+    if (confirm("Clear all completed orders?")) {
+        localStorage.removeItem("completed");
+        displayCompleted();
+    }
+}
+
+function filterCategory(category) {
+    let cards = document.querySelectorAll(".products .card");
+    let buttons = document.querySelectorAll(".categories button");
+
+    // remove active style
+    buttons.forEach(btn => btn.classList.remove("active"));
+
+    // highlight clicked button
+    event.target.classList.add("active");
+
+    // filter items
+    cards.forEach(card => {
+        let cat = card.getAttribute("data-category");
+
+        if (category === "all" || cat.includes(category)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+
+function loadProducts() {
+    let products = JSON.parse(localStorage.getItem("products")) || [];
+    let container = document.getElementById("productList");
+
+    products.forEach(p => {
+
+        let role = localStorage.getItem("role");
+
+        let adminButtons = "";
+
+        if (role === "admin") {
+            adminButtons = `
+                <button onclick="editProduct('${p.name}')" style="background:#2196F3;">✏️</button>
+                <button onclick="removeProduct('${p.name}')" style="background:#555;">🗑</button>
+            `;
+        }
+
+        container.innerHTML += `
+        <div class="card" data-category="${p.category}">
+            <img src="${p.image}">
+            <h3>${p.name}</h3>
+
+            <div class="price">₱${p.price}</div>
+
+            <div style="display:flex; gap:5px; justify-content:center;">
+                <button onclick="addToCart('${p.name}', ${p.price})">+</button>
+                ${adminButtons}
+            </div>
+        </div>
+        `;
+    });
+}
+
+loadProducts();
+
+function removeProduct(name) {
+    if (!confirm("Delete this product?")) return;
+
+    let products = JSON.parse(localStorage.getItem("products")) || [];
+
+    products = products.filter(p => p.name !== name);
+
+    localStorage.setItem("products", JSON.stringify(products));
+
+    location.reload(); // refresh UI
+}
+
+function editProduct(name) {
+
+    let role = localStorage.getItem("role");
+    if (role !== "admin") return;
+
+    let products = JSON.parse(localStorage.getItem("products")) || [];
+
+    let index = products.findIndex(p => p.name === name);
+
+    if (index === -1) return;
+
+    localStorage.setItem("editIndex", index);
+
+    window.location.href = "addproduct.html";
+}
+
+</script>
+
+</body>
+</html>

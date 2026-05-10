@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sales Analytics</title>
+
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background: #fff6b7;
+}
+
+/* HEADER */
+.header {
+    background: #ff4d4d;
+    color: white;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+/* FILTER BUTTONS */
+.filters {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 15px;
+}
+
+.filters button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #ff4d4d;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.filters button:hover {
+    background: #e60000;
+}
+
+/* DASHBOARD */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.big {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.highlight {
+    color: #ff4d4d;
+    font-weight: bold;
+}
+
+/* SALES LIST */
+.container {
+    padding: 20px;
+}
+
+.sale-card {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.item {
+    font-size: 14px;
+}
+
+.total {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.date {
+    font-size: 12px;
+    color: gray;
+}
+
+.back-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: white;
+    color: #ff4d4d;
+    padding: 6px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<a href="dashboard.html" class="back-btn">← Back</a>
+
+<div class="header">Sales Analytics </div>
+<div id="latestReceipt" style="padding:15px;"></div>
+
+<!-- FILTER BUTTONS -->
+<div class="filters">
+    <button onclick="showAll()">Today</button>
+    <button onclick="showWeekly()">Weekly</button>
+    <button onclick="showMonthly()">Monthly</button>
+    <button onclick="showYearly()">Yearly</button>
+    <button onclick="showArchive()">Archive</button>
+</div>
+
+<!-- ANALYTICS -->
+<div class="dashboard">
+    <div class="card">
+        <h3>Total Sales</h3>
+        <div class="big" id="totalSales">₱0</div>
+    </div>
+
+    <div class="card">
+        <h3>Today’s Sales</h3>
+        <div class="big" id="dailySales">₱0</div>
+    </div>
+
+    <div class="card">
+        <h3>Most Sold Product</h3>
+        <div class="big highlight" id="topProduct">None</div>
+    </div>
+</div>
+
+<!-- SALES LIST -->
+<div class="container" id="salesContainer"></div>
+
+<script>
+
+let sales = JSON.parse(localStorage.getItem("sales")) || [];
+let archivedSales = JSON.parse(localStorage.getItem("archivedSales")) || [];
+
+// limit to 20 only
+if (sales.length > 20) {
+
+    let excess = sales.length - 20;
+
+    // move oldest to archive
+    let moved = sales.splice(0, excess);
+
+    archivedSales = archivedSales.concat(moved);
+
+    // save both
+    localStorage.setItem("sales", JSON.stringify(sales));
+    localStorage.setItem("archivedSales", JSON.stringify(archivedSales));
+}
+
+sales = JSON.parse(localStorage.getItem("sales")) || [];
+
+/* ANALYTICS FUNCTION */
+function computeAnalytics(filteredSales) {
+    let total = 0;
+    let todaySales = 0;
+    let productCount = {};
+    let today = new Date().toDateString();
+
+    filteredSales.forEach(sale => {
+        // ✅ ensure number
+        total += Number(sale.total) || 0;
+
+        let saleDate = new Date(sale.date);
+
+        // ✅ check valid date
+        if (!isNaN(saleDate)) {
+            if (saleDate.toDateString() === today) {
+                todaySales += Number(sale.total) || 0;
+            }
+        }
+
+        // ✅ count using quantity
+if (sale.items && Array.isArray(sale.items)) {
+    sale.items.forEach(item => {
+        productCount[item.name] = (productCount[item.name] || 0) + (item.qty || 1);
+    });
+}
+    });
+
+    let topProduct = "None";
+    let max = 0;
+
+    for (let product in productCount) {
+        if (productCount[product] > max) {
+            max = productCount[product];
+            topProduct = product;
+        }
+    }
+
+    document.getElementById("totalSales").innerText = "₱" + total	;
+    document.getElementById("dailySales").innerText = "₱" + todaySales;
+    document.getElementById("topProduct").innerText = topProduct;
+}
+
+/* RENDER SALES */
+function renderSales(filteredSales) {
+    let container = document.getElementById("salesContainer");
+    container.innerHTML = "";
+
+    if(filteredSales.length === 0){
+        container.innerHTML = "<p>No transactions found.</p>";
+        computeAnalytics([]);
+        return;
+    }
+
+    let sortedSales = [...filteredSales].reverse();
+
+    sortedSales.forEach(sale => {
+        let itemsHTML = "";
+
+if (sale.items && Array.isArray(sale.items)) {
+    sale.items.forEach(item => {
+        itemsHTML += `<div class="item">• ${item.name} - ₱${item.price}</div>`;
+    });
+}
+
+        container.innerHTML += `
+            <div class="sale-card">
+                ${itemsHTML}
+                <div class="total">Total: ₱${sale.total}</div>
+                <div class="date">${sale.date}</div>
+            </div>
+        `;
+    });
+
+    computeAnalytics(filteredSales);
+}
+
+/* FILTER FUNCTIONS */
+function showAll() {
+    renderSales(sales);
+}
+
+function showWeekly() {
+    let now = new Date();
+
+    let filtered = sales.filter(sale => {
+        let saleDate = new Date(sale.date);
+        let diff = (now - saleDate) / (1000 * 60 * 60 * 24);
+        return diff <= 7;
+    });
+
+    renderSales(filtered);
+}
+
+function showMonthly() {
+    let now = new Date();
+
+    let filtered = sales.filter(sale => {
+        let saleDate = new Date(sale.date);
+        return saleDate.getMonth() === now.getMonth() &&
+               saleDate.getFullYear() === now.getFullYear();
+    });
+
+    renderSales(filtered);
+}
+
+function showYearly() {
+    let now = new Date();
+
+    let filtered = sales.filter(sale => {
+        let saleDate = new Date(sale.date);
+        return saleDate.getFullYear() === now.getFullYear();
+    });
+
+    renderSales(filtered);
+}
+
+/* INITIAL LOAD */
+showAll();
+
+function showLatestReceipt() {
+    if (sales.length === 0) return;
+
+    let latest = sales[sales.length - 1];
+
+    let receiptHTML = `
+        <div class="sale-card">
+            <h3>Latest Order ↓ </h3>
+    `;
+
+    latest.items.forEach(item => {
+        receiptHTML += `
+            <div class="item">
+                ${item.name} x${item.qty} - ₱${item.price * item.qty}
+            </div>
+        `;
+    });
+
+    receiptHTML += `
+            <div class="total">Total: ₱${latest.total}</div>
+            <div class="date">${latest.date}</div>
+        </div>
+    `;
+
+    document.getElementById("latestReceipt").innerHTML = receiptHTML;
+}
+
+showLatestReceipt(); //
+showAll();
+
+
+function showArchive() {
+    let archived = JSON.parse(localStorage.getItem("archivedSales")) || [];
+    renderSales(archived);
+}
+
+</script>
+
+</body>
+</html>

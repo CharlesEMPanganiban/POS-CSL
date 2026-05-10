@@ -1,0 +1,22 @@
+id,name,price,category,description,image
+1,Sulit Burger,38,bestseller,Classic burger at a sulit price!,/1.png
+2,Sulit Cheeseburger,48,bestseller,Cheeseburger at a sulit price!,/2.png
+3,Franks Hotdog,38,food,Juicy franks hotdog,/3.png
+4,Franks Footlong,48,food,Full-length franks hotdog,/4.png
+5,Ham Sandwich,48,food,Delicious ham sandwich,/5.png
+6,Ham & Cheese Sandwich,15,food,Ham and cheese sandwich,/6.png
+7,Chili Cheeseburger,32,food,Spicy chili cheeseburger,/7.png
+8,Super Double Chili Burger,35,food,Double patty with chili,/8.png
+9,Burger & Egg,34,food,Burger topped with egg,/9.png
+10,Cheeseburger w/ Egg,34,food,Cheeseburger topped with egg,/10.png
+11,Super Franks,35,bestseller,Super-sized franks hotdog,/11.png
+12,Cheesy Chili Franks,38,food,Franks with cheese and chili,/12.png
+13,Cheesy Footlong,51,food,Footlong with cheese,/13.png
+14,Cheesy Chili Footlong,56,food,Footlong with cheese and chili,/14.png
+15,Egg Sandwich,23,food,Simple and tasty egg sandwich,/15.png
+16,Butterscotch,6,others,Sweet butterscotch bar,/16.png
+17,Polvoron,6,others,Classic Filipino polvoron,/17.png
+18,Brownies,15,others,Rich chocolate brownies,/18.png
+19,Mountain Dew,15,beverages,Cold Mountain Dew,/mountaindew.png
+20,Bottled Water,15,beverages,Fresh bottled water,/naturespring.png
+21,Pepsi,25,beverages,Cold Pepsi,/pepsi.png

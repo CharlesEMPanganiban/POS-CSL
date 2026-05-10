@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Add Product</title>
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #fff6b7, #ffd84d);
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    width: 350px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.form h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    font-size: 13px;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+    transition: 0.2s;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+    resize: none;
+    height: 80px;
+    font-family: 'Poppins', sans-serif;
+    transition: 0.2s;
+}
+
+textarea:focus {
+    border-color: #ff4d4d;
+    box-shadow: 0 0 5px rgba(255,77,77,0.3);
+}
+
+.input-group input:focus {
+    border-color: #ff4d4d;
+    box-shadow: 0 0 5px rgba(255,77,77,0.3);
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #e60000;
+    transform: scale(1.02);
+}
+
+.image-preview {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.image-preview img {
+    width: 100%;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    display: none;
+    border: 1px solid #ddd;
+}
+
+.back-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: white;
+    color: #ff4d4d;
+    padding: 6px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transition: 0.2s;
+}
+
+.back-btn:hover {
+    background: #ffe0e0;
+    transform: scale(1.05);
+}
+
+
+select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+select:focus {
+    border-color: #ff4d4d;
+    box-shadow: 0 0 5px rgba(255,77,77,0.3);
+}
+
+</style>
+</head>
+
+<body>
+
+<a href="dashboard.html" class="back-btn">← Back</a>
+
+<div class="form">
+    <h2 id="formTitle">Add Product</h2>
+
+    <div class="input-group">
+        <label>Product Name</label>
+        <input type="text" id="name" placeholder="e.g. Cheeseburger">
+    </div>
+
+    <div class="input-group">
+        <label>Price (₱)</label>
+        <input type="number" id="price" placeholder="e.g. 99">
+    </div>
+
+<div class="input-group">
+    <label>Category</label>
+    <select id="category">
+        <option value="food">Food</option>
+        <option value="bestseller">Best Seller</option>
+        <option value="beverages">Beverages</option>
+        <option value="others">Others</option>
+    </select>
+</div>
+
+    <div class="input-group">
+        <label>Description</label>
+        <textarea id="description" placeholder="Enter product description"></textarea>
+    </div>
+
+
+
+<div class="input-group">
+    <label>Upload Image</label>
+
+    <input type="file"
+           id="imageFile"
+           accept="image/*"
+           onchange="previewImage(event)">
+</div>
+
+<div class="image-preview">
+    <img id="preview" src="" alt="Image Preview">
+</div>
+
+    <button onclick="addProduct()">Save Product</button>
+</div>
+
+<script>
+function addProduct() {
+    let name = document.getElementById("name").value;
+    let price = document.getElementById("price").value;
+    let category = document.getElementById("category").value;
+    let description = document.getElementById("description").value;
+    let image =
+    document.getElementById("preview").dataset.image || "";
+
+
+
+    let products = JSON.parse(localStorage.getItem("products")) || [];
+
+    let editIndex = localStorage.getItem("editIndex");
+    let isEdit = false;
+
+    if (editIndex !== null) {
+
+        editIndex = parseInt(editIndex);
+
+        if (!isNaN(editIndex)) {
+products[editIndex] = {
+    name,
+    price,
+    category,
+    image,
+    description
+};
+            isEdit = true;
+        }
+
+        localStorage.removeItem("editIndex");
+
+    } else {
+        products.push({
+    name,
+    price,
+    category,
+    image,
+    description
+});
+    }
+
+    localStorage.setItem("products", JSON.stringify(products));
+
+    if (isEdit) {
+        alert("Product Updated!");
+    } else {
+        alert("Product Added!");
+    }
+
+    localStorage.removeItem("editIndex");
+    window.location.href = "menu.html";
+}
+
+function previewImage(event) {
+
+    let file = event.target.files[0];
+
+    if (!file) return;
+
+    let reader = new FileReader();
+
+    reader.onload = function(e) {
+
+        let img = document.getElementById("preview");
+
+        img.src = e.target.result;
+        img.style.display = "block";
+
+        document.getElementById("preview").dataset.image =
+            e.target.result;
+    };
+
+    reader.readAsDataURL(file);
+}
+
+window.onload = function () {
+
+    let role = localStorage.getItem("role");
+    if (role !== "admin") {
+        alert("Access denied!");
+        window.location.href = "dashboard.html";
+        return;
+    }
+
+let editIndex = localStorage.getItem("editIndex");
+
+if (editIndex !== null) {
+
+    editIndex = parseInt(editIndex); // ✅ convert to number
+
+    if (!isNaN(editIndex)) {
+	
+	document.getElementById("formTitle").innerText = "Edit Product";
+
+        let products = JSON.parse(localStorage.getItem("products")) || [];
+        let product = products[editIndex];
+
+        if (product) {
+            document.getElementById("name").value = product.name;
+            document.getElementById("price").value = product.price;
+            document.getElementById("category").value = product.category;
+            document.getElementById("description").value = product.description;
+	    document.getElementById("preview").src = product.image;
+	    document.getElementById("preview").style.display = "block";
+	    document.getElementById("preview").dataset.image = product.image;
+        }
+
+    } else {
+        localStorage.removeItem("editIndex"); // ✅ safety cleanup
+    }
+}
+};
+
+</script>
+
+</body>
+</html>

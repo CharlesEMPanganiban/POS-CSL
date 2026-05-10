@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Employee Log</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #fff6b7, #ffd84d);
+}
+
+/* HEADER */
+.header {
+    background: #ff4d4d;
+    color: white;
+    padding: 20px;
+    font-size: 26px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* CONTAINER */
+.container {
+    padding: 30px;
+}
+
+/* BUTTON */
+.btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 10px;
+    background: #ff4d4d;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background: #ff4d4d;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background: #f2f2f2;
+}
+
+.header-content {
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
+.title {
+    text-align: center;
+}
+
+.back-btn {
+    position: absolute;
+    left: 0px;
+    bottom: 3px;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 8px;
+    background: white;
+    color: #ff4d4d;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.back-btn:hover {
+    background: #ffe0e0;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+    <div class="header-content">
+        <button class="back-btn" onclick="goBack()">Back</button>
+        <div class="title">Employee Log</div>
+    </div>
+</div>
+
+<div class="container">
+
+<button class="btn" onclick="clearLogs()">Clear Records</button>
+
+
+<table>
+    <thead>
+        <tr>
+<th>Date</th>
+<th>Username</th>
+<th>Time In</th>
+<th>Time Out</th>
+<th>Total Time</th>
+        </tr>
+    </thead>
+    <tbody id="logTable"></tbody>
+</table>
+
+</div>
+
+<script>
+
+// get current user
+let currentUser = localStorage.getItem("currentUser");
+let role = localStorage.getItem("role");
+
+// get logs
+let logs = JSON.parse(localStorage.getItem("logs")) || [];
+
+// AUTO TIME-IN (only if not already timed in)
+let activeLog = logs.find(log => log.username === currentUser && !log.timeOut);
+
+if (!activeLog && currentUser && role !== "admin") {
+let today = new Date().toLocaleDateString();
+let now = new Date().toLocaleTimeString();
+
+logs.push({
+    username: currentUser,
+    date: today,
+    timeIn: now,
+    timeOut: null
+});
+
+    localStorage.setItem("logs", JSON.stringify(logs));
+}
+
+// DISPLAY TABLE
+
+    function convertTo24(timeStr) {
+        let [time, modifier] = timeStr.split(" ");
+        let [hours, minutes, seconds] = time.split(":");
+
+        if (modifier === "PM" && hours !== "12") {
+            hours = parseInt(hours) + 12;
+        }
+        if (modifier === "AM" && hours === "12") {
+            hours = "00";
+        }
+
+        return `${hours}:${minutes}:${seconds}`;
+    }
+
+
+function loadTable() {
+    let table = document.getElementById("logTable");
+    table.innerHTML = "";
+
+let filteredLogs;
+
+if (role === "admin") {
+    filteredLogs = logs;
+} else {
+    filteredLogs = logs.filter(log => log.username === currentUser);
+}
+
+filteredLogs.forEach(log => {
+
+
+let total = "-";
+if (log.timeOut) {
+
+    let start = new Date("1970-01-01T" + convertTo24(log.timeIn));
+    let end = new Date("1970-01-01T" + convertTo24(log.timeOut));
+
+let diffMs = end - start;
+
+let totalMinutes = Math.floor(diffMs / 1000 / 60);
+let hours = Math.floor(totalMinutes / 60);
+let minutes = totalMinutes % 60;
+
+if (hours > 0 && minutes > 0) {
+    total = `${hours} hr ${minutes} mins`;
+} else if (hours > 0) {
+    total = `${hours} hr`;
+} else {
+    total = `${minutes} mins`;
+}
+}
+
+let row = `
+<tr>
+    <td>${log.date}</td>
+    <td>${log.username}</td>
+    <td>${log.timeIn}</td>
+    <td>${log.timeOut || "-"}</td>
+    <td>${total}</td>
+</tr>
+`;
+        table.innerHTML += row;
+    });
+}
+
+loadTable();
+
+// TIME OUT
+function goBack() {
+    window.location.href = "dashboard.html";
+}
+
+function clearLogs() {
+    if (confirm("Clear all records?")) {
+        localStorage.removeItem("logs");
+        location.reload();
+    }
+}
+
+</script>
+
+</body>
+</html>
